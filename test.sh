@@ -17,6 +17,10 @@ curl -d \
 echo ""
 
 # Check that user can be logged in
+curl -d \
+    "{\"Email\":\"john.doe@email.com\",\"Password\":\"johndoe123\"}" \
+    -H "Content-Type: application/json" http://localhost:8000/api/auth/login
+echo ""
 
 # Verify cookie given to already logged in user
 

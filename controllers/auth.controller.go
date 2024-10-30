@@ -4,10 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/RattlePenguin/SAP/models"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-
 	// "github.com/pquerna/otp/totp"
 )
 
@@ -30,12 +29,12 @@ func (ac *AuthController) RegisterUser(ctx *gin.Context) {
 	}
 
 	newUser := models.User{
-		Name:		payload.Name,
-		Email:		strings.ToLower(payload.Email),
-		Password:	payload.Password,
+		Name:     payload.Name,
+		Email:    strings.ToLower(payload.Email),
+		Password: payload.Password,
 	}
 
-	// SQL Injection Site
+	// TODO: SQL Injection Site
 	result := ac.DB.Create(&newUser)
 
 	// Error Handling
@@ -43,7 +42,7 @@ func (ac *AuthController) RegisterUser(ctx *gin.Context) {
 	if result.Error != nil && strings.Contains(result.Error.Error(), "UNIQUE constraint failed") {
 		ctx.JSON(http.StatusConflict, gin.H{"status": "fail", "message": "Email is already in use, please use another email address."})
 		return
-	// Other errors
+		// Other errors
 	} else if result.Error != nil {
 		ctx.JSON(http.StatusBadGateway, gin.H{"status": "error", "message": result.Error.Error()})
 		return
@@ -61,7 +60,7 @@ func (ac *AuthController) LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	// SQL Injection Site
+	// TODO: SQL Injection Site
 	var user models.User
 	result := ac.DB.First(&user, "email = ?", strings.ToLower(payload.Email))
 	if result.Error != nil {
