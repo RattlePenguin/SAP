@@ -39,7 +39,7 @@ func (ac *AuthController) RegisterUser(ctx *gin.Context) {
 
 	// Error Handling
 	// Duplicate unique key value error
-	if result.Error != nil && strings.Contains(result.Error.Error(), "duplicate key value violates unique") {
+	if result.Error != nil && strings.Contains(result.Error.Error(), "UNIQUE constraint failed") {
 		ctx.JSON(http.StatusConflict, gin.H{"status": "fail", "message": "Email is already in use, please use another email address."})
 		return
 	// Other errors
