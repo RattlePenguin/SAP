@@ -5,8 +5,11 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/RattlePenguin/SAP/models"
+	"github.com/RattlePenguin/SAP/controllers"
+	"github.com/RattlePenguin/SAP/routes"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -14,6 +17,9 @@ import (
 var (
 	DB     *gorm.DB
 	server *gin.Engine
+
+	AuthController		controllers.AuthController
+	AuthRouteController	routes.AuthRouteController
 )
 
 func init() {
@@ -24,17 +30,26 @@ func init() {
 	if err != nil {
 		log.Fatal("Failed to connect to the Database")
 	}
-	fmt.Println("? Connected Successfully to the Database")
+	fmt.Println("Connected Successfully to the Database")
+
+	AuthController = controllers.NewAuthController(DB)
+	AuthRouteController = routes.NewAuthRouteController(AuthController)
 
 	server = gin.Default()
 }
 
 func main() {
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"http://localhost:3000"}
+	corsConfig.AllowCredentials = true
+	
+
 	router := server.Group("/api")
 	router.GET("/healthchecker", func(ctx *gin.Context) {
 		message := "Welcome to Two-Factor Authentication with Golang with Ben!"
 		ctx.JSON(http.StatusOK, gin.H{"status": "success", "message": message})
 	})
 
+	AuthRouteController.AuthRoute(router)
 	log.Fatal(server.Run(":8000"))
 }
