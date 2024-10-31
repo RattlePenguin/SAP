@@ -17,10 +17,19 @@ curl -d \
 echo ""
 
 # Check that user can be logged in
-curl -d \
+json=$(curl -d \
     "{\"Email\":\"john.doe@email.com\",\"Password\":\"johndoe123\"}" \
-    -H "Content-Type: application/json" http://localhost:8000/api/auth/login
+    -H "Content-Type: application/json" http://localhost:8000/api/auth/login)
 echo ""
+
+userid=$(echo "$json" | cut -d '"' -f14)
+
+# Generate OTP for User
+curl -d \
+    "{\"user_id\":\"$userid\"}" \
+    -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/generate
+
+
 
 # Verify cookie given to already logged in user
 

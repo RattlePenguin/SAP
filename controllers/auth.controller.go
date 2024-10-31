@@ -7,7 +7,7 @@ import (
 	"github.com/RattlePenguin/SAP/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	// "github.com/pquerna/otp/totp"
+	"github.com/pquerna/otp/totp"
 )
 
 type AuthController struct {
@@ -82,14 +82,14 @@ func (ac *AuthController) GenerateOTP(ctx *gin.Context) {
 	var payload *models.OTPInput
 
 	if err := ctx.ShouldBindJSON(&payload); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message", err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message":	 err.Error()})
 		return
 	}
 
 	// Returns key in base32 and URL encoded
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:			"rattlepenguin.com"
-		AccountName:	"admin@admin.com"
+		Issuer:			"rattlepenguin.com",
+		AccountName:	"admin@admin.com",
 		SecretSize:		15,
 	})
 
@@ -109,5 +109,11 @@ func (ac *AuthController) GenerateOTP(ctx *gin.Context) {
 		Otp_auth_url:	key.URL(),
 	}
 
-	
+	ac.DB.Model(&user).Updates(dataToUpdate)
+
+	otpResponse := gin.H{
+		"base32":		key.Secret(),
+		"otpauth_url":	key.URL(),
+	}
+	ctx.JSON(http.StatusOK, otpResponse)
 }
