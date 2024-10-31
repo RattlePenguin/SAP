@@ -76,3 +76,38 @@ func (ac *AuthController) LoginUser(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"status": "success", "user": userResponse})
 }
+
+// Generate TOTP
+func (ac *AuthController) GenerateOTP(ctx *gin.Context) {
+	var payload *models.OTPInput
+
+	if err := ctx.ShouldBindJSON(&payload); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message", err.Error()})
+		return
+	}
+
+	// Returns key in base32 and URL encoded
+	key, err := totp.Generate(totp.GenerateOpts{
+		Issuer:			"rattlepenguin.com"
+		AccountName:	"admin@admin.com"
+		SecretSize:		15,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	var user models.User
+	result := ac.DB.First(&user, "id = ?", payload.UserId)
+	if result.Error != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid Email or Password"})
+		return
+	}
+
+	dataToUpdate := models.User{
+		Otp_secret:		key.Secret(),
+		Otp_auth_url:	key.URL(),
+	}
+
+	
+}
