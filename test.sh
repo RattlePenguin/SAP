@@ -59,6 +59,11 @@ curl -d \
     "{\"user_id\":\"$userid\",\"token\":\"$token\"}" \
     -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/validate
 
+# Disable OTP for User
+curl -d \
+    "{\"user_id\":\"$userid\"}" \
+    -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/disable
+
 
 ##### Vulnerability Tests #####
 

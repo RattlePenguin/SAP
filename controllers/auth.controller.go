@@ -198,7 +198,7 @@ func (ac *AuthController) DisableOTP(ctx *gin.Context) {
 	var user models.User
 	result := ac.DB.First(&user, "id = ?", payload.UserId)
 	if result.Error != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "User doesn't exist"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "User does not exist!"})
 		return
 	}
 
