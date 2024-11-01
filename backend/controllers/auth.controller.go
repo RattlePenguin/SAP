@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/RattlePenguin/SAP/backend/models"
 	"github.com/gin-gonic/gin"
-	"github.com/pquerna/otp/totp"
+	"github.com/RattlePenguin/SAP/backend/models"
 	"gorm.io/gorm"
+	
+	"github.com/pquerna/otp/totp"
 )
 
 type AuthController struct {

@@ -12,7 +12,6 @@ type User struct {
 	Password		string `gorm:"not null"`
 
 	Otp_enabled		bool `gorm:"default:false;"`
-	// TODO: What's the difference^?
 	Otp_verified	bool `gorm:"default:false;"`
 
 	Otp_secret		string
