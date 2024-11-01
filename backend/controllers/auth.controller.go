@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/RattlePenguin/SAP/models"
+	"github.com/RattlePenguin/SAP/backend/models"
 	"github.com/gin-gonic/gin"
 	"github.com/pquerna/otp/totp"
 	"gorm.io/gorm"

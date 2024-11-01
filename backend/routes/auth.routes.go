@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/RattlePenguin/SAP/controllers"
+	"github.com/RattlePenguin/SAP/backend/controllers"
 	"github.com/gin-gonic/gin"
 )
 

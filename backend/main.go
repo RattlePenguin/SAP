@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/RattlePenguin/SAP/models"
-	"github.com/RattlePenguin/SAP/controllers"
-	"github.com/RattlePenguin/SAP/routes"
+	"github.com/RattlePenguin/SAP/backend/models"
+	"github.com/RattlePenguin/SAP/backend/controllers"
+	"github.com/RattlePenguin/SAP/backend/routes"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
