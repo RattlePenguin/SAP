@@ -158,3 +158,30 @@ func (ac *AuthController) VerifyOTP(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"otp_verified": true, "user": userResponse})
 }
+
+// Validate OTP without modifying database
+func (ac *AuthController) ValidateOTP(ctx *gin.Context) {
+	var payload *models.OTPInput
+
+	if err := ctx.ShouldBindJSON(&payload); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": err.Error()})
+		return
+	}
+
+	message := "Token is invalid or user does not exist."
+
+	var user models.User
+	result := ac.DB.First(&user, "id = ?", payload.UserId)
+	if result.Error != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": message})
+		return
+	}
+
+	valid := totp.Validate(payload.Token, user.Otp_secret)
+	if !valid {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": message})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"otp_valid": true})
+}

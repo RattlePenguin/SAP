@@ -37,7 +37,7 @@ curl -d \
     "{\"user_id\":\"$userid\"}" \
     -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/generate
 
-# Incorrect OTP produces error
+# Verify Incorrect OTP produces error
 read -n6 token
 bad_token=$(( 10#$token + 1 ))
 curl -d \
@@ -48,6 +48,16 @@ curl -d \
 curl -d \
     "{\"user_id\":\"$userid\",\"token\":\"$token\"}" \
     -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/verify
+
+# Validate Incorrect OTP for User
+curl -d \
+    "{\"user_id\":\"$userid\",\"token\":\"$bad_token\"}" \
+    -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/validate
+
+# Validate OTP for User
+curl -d \
+    "{\"user_id\":\"$userid\",\"token\":\"$token\"}" \
+    -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/validate
 
 
 ##### Vulnerability Tests #####

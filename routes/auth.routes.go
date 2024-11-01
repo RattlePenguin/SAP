@@ -20,4 +20,5 @@ func (rc *AuthRouteController) AuthRoute(rg *gin.RouterGroup) {
 	router.POST("/login", rc.AuthController.LoginUser)
 	router.POST("/otp/generate", rc.AuthController.GenerateOTP)
 	router.POST("/otp/verify", rc.AuthController.VerifyOTP)
+	router.POST("/otp/validate", rc.AuthController.ValidateOTP)
 }
