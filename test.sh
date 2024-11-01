@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 
+##### Server Running Tests #####
+
+# PRE-TEST: Wipe database
+##### rm golang.db
+
 # Check that server is running
 curl "http://localhost:8000/api/healthchecker"
 echo ""
+
+
+##### 2FA Route Testing #####
 
 # Check that new user can be successfully registered
 curl -d \
@@ -21,15 +29,22 @@ json=$(curl -d \
     "{\"Email\":\"john.doe@email.com\",\"Password\":\"johndoe123\"}" \
     -H "Content-Type: application/json" http://localhost:8000/api/auth/login)
 echo ""
-
 userid=$(echo "$json" | cut -d '"' -f14)
+
 
 # Generate OTP for User
 curl -d \
     "{\"user_id\":\"$userid\"}" \
     -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/generate
 
+# Verify OTP for User
+read -n6 token
+curl -d \
+    "{\"user_id\":\"$userid\",\"token\":\"$token\"}" \
+    -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/verify
 
+
+##### Vulnerability Tests #####
 
 # Verify cookie given to already logged in user
 
