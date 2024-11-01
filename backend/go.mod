@@ -1,4 +1,4 @@
-module github.com/RattlePenguin/SAP
+module github.com/RattlePenguin/SAP/backend
 
 go 1.23.2
 
