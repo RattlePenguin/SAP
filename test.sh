@@ -37,8 +37,14 @@ curl -d \
     "{\"user_id\":\"$userid\"}" \
     -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/generate
 
-# Verify OTP for User
+# Incorrect OTP produces error
 read -n6 token
+bad_token=$(( 10#$token + 1 ))
+curl -d \
+    "{\"user_id\":\"$userid\",\"token\":\"$bad_token\"}" \
+    -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/verify
+
+# Verify OTP for User
 curl -d \
     "{\"user_id\":\"$userid\",\"token\":\"$token\"}" \
     -H "Content-Type: application/json" http://localhost:8000/api/auth/otp/verify
