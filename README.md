@@ -11,6 +11,6 @@ vulnerable to XSS attacks.
 # Vulnerable Lines
 
 # References
-Uses code from:
-![2FA in Golang](https://github.com/wpcodevo/two_factor_golang)
-![2FA in Golang](https://github.com/wpcodevo/two_factor_reactjs)
+Uses code from:  
+[2FA in Golang](https://github.com/wpcodevo/two_factor_golang)  
+[2FA in React](https://github.com/wpcodevo/two_factor_reactjs)  

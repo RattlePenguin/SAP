@@ -21,4 +21,5 @@ func (rc *AuthRouteController) AuthRoute(rg *gin.RouterGroup) {
 	router.POST("/otp/generate", rc.AuthController.GenerateOTP)
 	router.POST("/otp/verify", rc.AuthController.VerifyOTP)
 	router.POST("/otp/validate", rc.AuthController.ValidateOTP)
+	router.POST("/otp/disable", rc.AuthController.DisableOTP)
 }
