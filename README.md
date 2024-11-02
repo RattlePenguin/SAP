@@ -2,11 +2,9 @@
 Author: RattlePenguin
 
 # Description
-Allows users to log into a blog service, with 2FA integration. Logged in users
-have access to everyone's blog posts.
+App emulates a login form, with 2FA integration.
 
-The login form is vulnerable to SQL injection attacks. The blogging service is
-vulnerable to XSS attacks.
+The login form is vulnerable to SQL injection attacks.
 
 # Vulnerable Lines
 
