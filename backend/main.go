@@ -43,9 +43,11 @@ func main() {
 	corsConfig.AllowOrigins = []string{"http://localhost:3000"}
 	corsConfig.AllowCredentials = true
 
+	server.Use(cors.New(corsConfig))
+
 	router := server.Group("/api")
 	router.GET("/healthchecker", func(ctx *gin.Context) {
-		message := "Welcome to Two-Factor Authentication with Golang with Ben!"
+		message := "Welcome to Two-Factor Authentication with RattlePenguin!"
 		ctx.JSON(http.StatusOK, gin.H{"status": "success", "message": message})
 	})
 
