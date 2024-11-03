@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/RattlePenguin/SAP/backend/models"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	
+
 	"github.com/pquerna/otp/totp"
 )
 
@@ -35,7 +35,6 @@ func (ac *AuthController) RegisterUser(ctx *gin.Context) {
 		Password: payload.Password,
 	}
 
-	// TODO: SQL Injection Site
 	result := ac.DB.Create(&newUser)
 
 	// Error Handling
@@ -61,11 +60,11 @@ func (ac *AuthController) LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	// TODO: SQL Injection Site
+	// SQL Injection Site
 	var user models.User
-	result := ac.DB.First(&user, "email = ?", strings.ToLower(payload.Email))
+	result := ac.DB.First(&user, "email = ? AND password = ?", strings.ToLower(payload.Email), payload.Password)
 	if result.Error != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid Email or Password"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": result.Error.Error()})
 		return
 	}
 
@@ -131,7 +130,6 @@ func (ac *AuthController) VerifyOTP(ctx *gin.Context) {
 	message := "Token is invalid or user does not exist."
 
 	var user models.User
-	// TODO SQL Injection Site
 	result := ac.DB.First(&user, "id = ?", payload.UserId)
 	if result.Error != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": message})
