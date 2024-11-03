@@ -11,6 +11,7 @@ import (
 	"github.com/RattlePenguin/SAP/backend/models"
 	"github.com/RattlePenguin/SAP/backend/routes"
 	"gorm.io/driver/sqlite"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm"
 )
 
@@ -24,7 +25,9 @@ var (
 
 func init() {
 	var err error
-	DB, err = gorm.Open(sqlite.Open("golang.db"), &gorm.Config{})
+	DB, err = gorm.Open(sqlite.Open("golang.db"), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	DB.AutoMigrate(&models.User{})
 
 	if err != nil {

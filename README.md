@@ -6,7 +6,9 @@ App emulates a login form, with 2FA integration.
 
 The login form is vulnerable to SQL injection attacks.
 
-# Vulnerable Lines
+# Vulnerabilities
+SQL Injection: SAP/backend/controllers/auth.controller.go
+- Line 65
 
 # References
 Uses code from:  

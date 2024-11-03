@@ -12,12 +12,11 @@ import { ILoginResponse } from "../api/types";
 
 const loginSchema = object({
   email: string()
-    .min(1, "Email address is required")
-    .email("Email address is invalid"),
+    .min(1, "Email address is required"),
   password: string()
     .min(1, "Password is required")
     .min(8, "Password must be more than 8 characters")
-    .max(32, "Password must be less than 32 characters"),
+    .max(64, "Password must be less than 64 characters"),
 });
 
 export type LoginInput = TypeOf<typeof loginSchema>;
@@ -91,7 +90,7 @@ const LoginPage = () => {
             onSubmit={handleSubmit(onSubmitHandler)}
             className="max-w-md w-full mx-auto overflow-hidden shadow-lg bg-ct-dark-200 rounded-2xl p-8 space-y-5"
           >
-            <FormInput label="Email" name="email" type="email" />
+            <FormInput label="Email" name="email" type="string" />
             <FormInput label="Password" name="password" type="password" />
 
             <div className="text-right">

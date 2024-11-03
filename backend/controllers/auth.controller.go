@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -62,7 +63,11 @@ func (ac *AuthController) LoginUser(ctx *gin.Context) {
 
 	// SQL Injection Site
 	var user models.User
-	result := ac.DB.First(&user, "email = ? AND password = ?", strings.ToLower(payload.Email), payload.Password)
+	query := fmt.Sprintf("SELECT * FROM users WHERE users.email = \"%s\" AND users.password = \"%s\" ORDER BY users.id", strings.ToLower(payload.Email), payload.Password)
+
+	// Raw SQL
+	result := ac.DB.Raw(query).First(&user)
+
 	if result.Error != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": result.Error.Error()})
 		return
